@@ -38,6 +38,7 @@ public class InvestingBot extends TelegramLongPollingBot {
             " бота используйте данный формат: (Из какой) - (В какую). Коды валюты пишите на английском языке";
     private static final String incorrectStockFormatString = "Для корректной работы боты пишите " +
             "существующие компании. Их названия должны содержать только английские буквы";
+    private static final String errorStockString = "Произошла ошибка на сервере, попробуйте через другое время.";
 
     enum Market{
         Stock,
@@ -106,7 +107,11 @@ public class InvestingBot extends TelegramLongPollingBot {
             long messageId = update.getCallbackQuery().getMessage().getMessageId();
             long chatId = update.getCallbackQuery().getMessage().getChatId();
             StockInfo stock = AlphavantageConnector.getStockInformation(callbackData);
-            sendEditedMessage(stock, messageId, chatId);
+            if (stock == null){
+                sendMessage(Long.toString(chatId), errorStockString);
+            }else {
+                sendEditedMessage(stock, messageId, chatId);
+            }
         }
     }
 
