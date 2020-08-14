@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -cp target/classes:target/dependency/* BotRunner
+worker: java $JAVA_OPTS -cp target/classes:target/dependency/* BotRunner
